@@ -6,6 +6,8 @@ import Projects from './components/Projects';
 import Skills from './components/Skills';
 import Experience from './components/Experience';
 import Certifications from './components/Certifications';
+import StatsSection from './components/StatsSection';
+import CompanyLogos from './components/CompanyLogos';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 
@@ -15,6 +17,8 @@ function App() {
       <Navbar />
       <Home />
       <About />
+      <StatsSection />
+      <CompanyLogos />
       <Projects />
       <Skills />
       <Experience />

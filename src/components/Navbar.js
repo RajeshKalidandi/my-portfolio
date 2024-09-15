@@ -28,10 +28,6 @@ const Navbar = () => {
       link: 'experience'
     },
     {
-      id: 6,
-      link: 'achievements'
-    },
-    {
       id: 7,
       link: 'contact'
     }

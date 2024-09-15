@@ -8,7 +8,8 @@ const Contact = () => {
     name: '',
     email: '',
     company: '',
-    message: ''
+    message: '',
+    opportunityType: ''
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,17 +26,14 @@ const Contact = () => {
       process.env.REACT_APP_EMAILJS_SERVICE_ID,
       process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
       {
-        name: formData.name,
-        email: formData.email,
-        company: formData.company,
-        message: formData.message,
+        ...formData,
         to_email: 'kalidandiirajesh@gmail.com'
       },
       process.env.REACT_APP_EMAILJS_USER_ID
     )
       .then((result) => {
         console.log(result.text);
-        setFormData({ name: '', email: '', company: '', message: '' });
+        setFormData({ name: '', email: '', company: '', message: '', opportunityType: '' });
         setIsSubmitted(true);
       }, (error) => {
         console.log(error.text);
@@ -136,6 +134,33 @@ const Contact = () => {
                   whileFocus="focus"
                   variants={inputVariants}
                 ></motion.textarea>
+              </motion.div>
+              <motion.div 
+                className="mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <label htmlFor="opportunityType" className="block text-gray-300 mb-2">Type of Opportunity</label>
+                <motion.select
+                  id="opportunityType"
+                  name="opportunityType"
+                  value={formData.opportunityType}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-3 py-2 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  whileFocus="focus"
+                  variants={inputVariants}
+                >
+                  <option value="">Select Opportunity Type</option>
+                  <option value="full-time">Full-time</option>
+                  <option value="internship">Internship</option>
+                  <option value="remote">Remote</option>
+                  <option value="part-time">Part-time</option>
+                  <option value="freelance">Freelance</option>
+                  <option value="contract">Contract</option>
+                  <option value="hourly">Hourly</option>
+                </motion.select>
               </motion.div>
               <motion.button 
                 type="submit" 

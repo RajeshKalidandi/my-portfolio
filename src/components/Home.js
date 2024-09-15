@@ -1,8 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-scroll';
 
 const Home = () => {
+  const jobTypes = [
+    "Full-time Roles", "Internships", "Remote Positions",
+    "Part-time Opportunities", "Freelance Projects", 
+    "Contract Work", "Hourly Consulting"
+  ];
+
+  const [currentJobType, setCurrentJobType] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentJobType((prev) => (prev + 1) % jobTypes.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [jobTypes.length]); // Added jobTypes.length as a dependency
+
   return (
     <div name="home" className="w-full h-screen bg-gradient-to-b from-black via-black to-gray-800">
       <div className="max-w-screen-lg mx-auto flex flex-col items-center justify-center h-full px-4 md:flex-row">
@@ -22,7 +37,10 @@ const Home = () => {
             Computer Science & Engineering student specializing in AI & ML.
             Experienced in data analysis, software development, and innovative AI projects.
           </p>
-          <div>
+          <h2 className="text-3xl font-bold text-gray-300 mt-4">
+            Open to: <span className="text-blue-500">{jobTypes[currentJobType]}</span>
+          </h2>
+          <div className="mt-8">
             <Link
               to="projects"
               smooth

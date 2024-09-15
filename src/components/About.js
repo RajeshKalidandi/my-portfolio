@@ -45,6 +45,18 @@ const About = () => {
           I'm seeking opportunities to leverage my technical skills and creative problem-solving abilities in challenging roles 
           that allow me to contribute to cutting-edge projects and drive impactful results.
         </motion.p>
+
+        <motion.p 
+          className="text-xl mt-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+        >
+          With a diverse skill set and adaptable work style, I'm equipped to excel in various work arrangements, 
+          including full-time positions, internships, remote work, part-time roles, freelance projects, 
+          contract assignments, and hourly consultations. My ability to quickly learn and adapt makes me 
+          an ideal candidate for dynamic and evolving work environments.
+        </motion.p>
       </div>
     </div>
   );
