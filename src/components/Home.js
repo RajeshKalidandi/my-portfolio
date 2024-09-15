@@ -13,7 +13,10 @@ const Home = () => {
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-4xl sm:text-7xl font-bold text-white">
-            Rajesh Kalidandi
+            I'm <br />
+            <span className="text-cyan-500">
+              Rajesh Kalidandi
+            </span>
           </h2>
           <p className="text-gray-500 py-4 max-w-md">
             Computer Science & Engineering student specializing in AI & ML.
