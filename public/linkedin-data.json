@@ -1,0 +1,45 @@
+{
+  "experiences": [
+    {
+      "title": "Software Engineering Intern",
+      "company": "Accenture North America",
+      "date": "Jun 2023 - Aug 2023",
+      "description": [
+        "Developed and implemented machine learning models for predictive analytics.",
+        "Collaborated with cross-functional teams to integrate AI solutions into existing systems.",
+        "Contributed to the development of a natural language processing tool for customer service automation."
+      ]
+    },
+    {
+      "title": "Data Science Intern",
+      "company": "Walmart USA",
+      "date": "May 2022 - Jul 2022",
+      "description": [
+        "Analyzed large datasets to identify trends and patterns in customer behavior.",
+        "Developed predictive models to forecast product demand and optimize inventory management.",
+        "Created data visualizations and dashboards to communicate insights to stakeholders."
+      ]
+    },
+    {
+      "title": "Software Engineering Intern",
+      "company": "Cognizant",
+      "date": "Jun 2021 - Aug 2021",
+      "description": [
+        "Assisted in the development of web applications using React and Node.js.",
+        "Participated in code reviews and contributed to improving code quality and efficiency.",
+        "Gained hands-on experience with agile development methodologies and version control systems."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "title": "B.Tech in Computer Science & Engineering",
+      "institution": "Malla Reddy Engineering College",
+      "date": "2020 - 2024",
+      "description": [
+        "Specialization in Artificial Intelligence and Machine Learning",
+        "Relevant coursework: Data Structures, Algorithms, Machine Learning, Deep Learning, Computer Vision"
+      ]
+    }
+  ]
+}
