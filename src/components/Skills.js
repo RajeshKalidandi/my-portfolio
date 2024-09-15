@@ -8,10 +8,26 @@ import { GiArtificialIntelligence } from 'react-icons/gi';
 import { AiOutlineConsoleSql } from 'react-icons/ai';
 
 const SkillIcon = ({ icon: Icon, name, color }) => (
-  <div className="flex flex-col items-center m-4">
-    <Icon className="text-4xl mb-2" style={{ color }} />
-    <span className="text-sm">{name}</span>
-  </div>
+  <motion.div 
+    className="flex flex-col items-center m-4"
+    whileHover={{ scale: 1.1 }}
+    whileTap={{ scale: 0.9 }}
+  >
+    <motion.div
+      whileHover={{ rotate: 360 }}
+      transition={{ duration: 0.6 }}
+    >
+      <Icon className="text-4xl mb-2" style={{ color }} />
+    </motion.div>
+    <motion.span 
+      className="text-sm text-white"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.2 }}
+    >
+      {name}
+    </motion.span>
+  </motion.div>
 );
 
 const Skills = () => {
@@ -45,39 +61,83 @@ const Skills = () => {
     { name: 'SQL', icon: AiOutlineConsoleSql, color: '#03A9F4' },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100
+      }
+    }
+  };
+
   return (
-    <div name="skills" className="min-h-screen bg-gray-900 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-extrabold text-white mb-8 text-center">Skills</h2>
+    <div name="skills" className="w-full min-h-screen bg-gradient-to-b from-gray-800 to-black text-white py-16">
+      <div className="max-w-screen-lg p-4 mx-auto flex flex-col justify-center w-full h-full">
         <motion.div 
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 justify-items-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          className="pb-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
+          <p className="text-4xl font-bold inline border-b-4 border-gray-500">Skills</p>
+          <p className="py-6">These are the technologies I've worked with</p>
+        </motion.div>
+
+        <motion.div 
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 text-center"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
           {importantSkills.map((skill, index) => (
-            <SkillIcon key={index} icon={skill.icon} name={skill.name} color={skill.color} />
+            <motion.div key={index} variants={itemVariants}>
+              <SkillIcon icon={skill.icon} name={skill.name} color={skill.color} />
+            </motion.div>
           ))}
         </motion.div>
-        <div className="text-center mt-8">
-          <button
+
+        <motion.div 
+          className="text-center mt-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          <motion.button
             onClick={() => setShowAll(!showAll)}
-            className="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+            className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 px-6 py-3 my-8 mx-auto flex items-center rounded-md hover:scale-110 duration-300"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             {showAll ? 'Show Less' : 'Show All Skills'}
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
+
         <AnimatePresence>
           {showAll && (
             <motion.div 
-              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 justify-items-center mt-8"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.5 }}
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 text-center"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              exit={{ opacity: 0, transition: { duration: 0.5 } }}
             >
               {allSkills.slice(importantSkills.length).map((skill, index) => (
-                <SkillIcon key={index + importantSkills.length} icon={skill.icon} name={skill.name} color={skill.color} />
+                <motion.div key={index + importantSkills.length} variants={itemVariants}>
+                  <SkillIcon icon={skill.icon} name={skill.name} color={skill.color} />
+                </motion.div>
               ))}
             </motion.div>
           )}

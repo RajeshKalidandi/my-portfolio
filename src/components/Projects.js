@@ -1,53 +1,37 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import axios from 'axios';
-import { useSpring, animated } from 'react-spring';
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
-import LoadingSpinner from './LoadingSpinner';
 
-const ProjectCard = ({ project }) => {
-  const [props, set] = useSpring(() => ({
-    scale: 1,
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  }));
-
-  return (
-    <animated.div
-      style={props}
-      onMouseEnter={() => set({ scale: 1.05, boxShadow: '0 6px 8px rgba(0, 0, 0, 0.2)' })}
-      onMouseLeave={() => set({ scale: 1, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' })}
-      className="bg-gray-800 rounded-lg p-6 flex flex-col justify-between h-full"
+const ProjectCard = ({ name, description, topics, html_url }) => (
+  <motion.div 
+    className="bg-gray-800 rounded-lg p-6 shadow-lg"
+    initial={{ opacity: 0, y: 50 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    whileHover={{ scale: 1.05 }}
+  >
+    <h3 className="text-2xl font-bold mb-2 text-white">{name}</h3>
+    <p className="text-gray-300 mb-4">{description || "No description available."}</p>
+    <div className="flex flex-wrap mb-4">
+      {topics.map((tech, index) => (
+        <span key={index} className="bg-blue-500 text-white rounded-full px-3 py-1 text-sm mr-2 mb-2">{tech}</span>
+      ))}
+    </div>
+    <a 
+      href={html_url} 
+      target="_blank" 
+      rel="noopener noreferrer"
+      className="text-blue-400 hover:text-blue-300 transition duration-300"
     >
-      <div>
-        <h3 className="text-2xl font-bold mb-3 text-pink-600">{project.name}</h3>
-        <p className="text-gray-300 mb-4">{project.description || 'No description available'}</p>
-      </div>
-      <div>
-        {project.language && (
-          <p className="text-gray-400 mb-3">
-            Main language: <span className="text-pink-600">{project.language}</span>
-          </p>
-        )}
-        <div className="flex items-center flex-wrap">
-          <a href={project.html_url} target="_blank" rel="noopener noreferrer" className="text-pink-600 inline-flex items-center md:mb-2 lg:mb-0 hover:text-pink-400 mr-4">
-            <FaGithub className="mr-1" /> View on GitHub
-          </a>
-          {project.homepage && (
-            <a href={project.homepage} target="_blank" rel="noopener noreferrer" className="text-pink-600 inline-flex items-center md:mb-2 lg:mb-0 hover:text-pink-400">
-              <FaExternalLinkAlt className="mr-1" /> Live Demo
-            </a>
-          )}
-        </div>
-        <p className="text-gray-400 text-sm mt-2">
-          Last updated: {new Date(project.updated_at).toLocaleDateString()}
-        </p>
-      </div>
-    </animated.div>
-  );
-};
+      View Project →
+    </a>
+  </motion.div>
+);
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -55,11 +39,12 @@ const Projects = () => {
         const response = await axios.get('https://api.github.com/users/RajeshKalidandi/repos');
         const sortedProjects = response.data
           .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
-          .slice(0, 6);
+          .slice(0, 6); // Get the 6 most recently updated projects
         setProjects(sortedProjects);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching projects:', error);
+        setError('Failed to fetch projects. Please try again later.');
         setLoading(false);
       }
     };
@@ -67,19 +52,44 @@ const Projects = () => {
     fetchProjects();
   }, []);
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
+  if (loading) return <div className="text-center text-white">Loading projects...</div>;
+  if (error) return <div className="text-center text-red-500">{error}</div>;
 
   return (
-    <div name='projects' className='w-full min-h-screen bg-gray-900 text-gray-300 py-16'>
-      <div className='max-w-[1200px] mx-auto p-4'>
-        <h2 className='text-4xl font-bold mb-8 border-b-4 border-pink-600 inline-block'>Projects</h2>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-          {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+    <div name="projects" className="w-full min-h-screen text-gray-300 bg-gradient-to-b from-black to-gray-800 py-16">
+      <div className="max-w-screen-lg p-4 mx-auto flex flex-col justify-center w-full h-full">
+        <motion.div 
+          className="pb-8"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <p className="text-4xl font-bold inline border-b-4 border-gray-500">Projects</p>
+          <p className="py-6">Check out some of my recent work</p>
+        </motion.div>
+
+        <motion.div 
+          className="grid sm:grid-cols-2 md:grid-cols-2 gap-8 sm:px-0"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          {projects.map((project, index) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              <ProjectCard 
+                name={project.name} 
+                description={project.description} 
+                topics={project.topics} 
+                html_url={project.html_url} 
+              />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
