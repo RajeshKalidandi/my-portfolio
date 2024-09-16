@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://www.rajeshkalidandi.com/sitemap.xml
+Sitemap: https://rajeshkalidandi.netlify.app/sitemap.xml

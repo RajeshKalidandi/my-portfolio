@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet';
 
 const AnimatedNumber = ({ value, suffix }) => {
   return (
@@ -7,7 +8,7 @@ const AnimatedNumber = ({ value, suffix }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className="text-4xl font-bold text-blue-500"
+      className="text-3xl sm:text-4xl font-bold text-blue-500"
     >
       {value}{suffix}
     </motion.span>
@@ -15,11 +16,11 @@ const AnimatedNumber = ({ value, suffix }) => {
 };
 
 const StatsSection = () => {
-  const stats = [
+  const stats = useMemo(() => [
     { label: 'Projects Completed', value: 20, suffix: '+', icon: '🚀' },
     { label: 'Companies Worked With', value: 10, suffix: '+', icon: '🏢' },
     { label: 'Years of Experience', value: 2, suffix: '+', icon: '⏳' },
-  ];
+  ], []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -45,32 +46,40 @@ const StatsSection = () => {
 
   return (
     <section className="w-full min-h-screen bg-gradient-to-b from-black to-gray-800 text-gray-300 py-16 relative overflow-hidden">
+      <Helmet>
+        <title>Statistics - Rajesh Kalidandi</title>
+        <meta name="description" content="Explore Rajesh Kalidandi's professional journey in numbers, including projects completed, companies worked with, and years of experience." />
+        <meta name="keywords" content="Rajesh Kalidandi, Statistics, Projects, Experience, Full Stack Developer" />
+      </Helmet>
+
       {/* Dynamic background particles */}
-      {[...Array(50)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute bg-white rounded-full"
-          style={{
-            width: Math.random() * 3 + 1,
-            height: Math.random() * 3 + 1,
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-          }}
-          animate={{
-            y: [0, -1000],
-            opacity: [0, 1, 0],
-          }}
-          transition={{
-            duration: Math.random() * 10 + 20,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-      ))}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        {[...Array(25)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute bg-white rounded-full"
+            style={{
+              width: Math.random() * 2 + 1,
+              height: Math.random() * 2 + 1,
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -1000],
+              opacity: [0, 1, 0],
+            }}
+            transition={{
+              duration: Math.random() * 10 + 20,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
+        ))}
+      </div>
       
       <div className="max-w-screen-lg mx-auto px-4 relative z-10">
         <motion.h2 
-          className="text-4xl font-bold text-center mb-12 text-white"
+          className="text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-12 text-white"
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
@@ -78,7 +87,7 @@ const StatsSection = () => {
           My Journey in Numbers
         </motion.h2>
         <motion.div 
-          className="grid grid-cols-1 gap-8 sm:grid-cols-3"
+          className="grid grid-cols-1 gap-6 sm:gap-8 sm:grid-cols-3"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -86,22 +95,23 @@ const StatsSection = () => {
           {stats.map((stat, index) => (
             <motion.div
               key={index}
-              className="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-lg p-8 text-center"
+              className="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-lg p-6 sm:p-8 text-center"
               variants={itemVariants}
-              whileHover={{ scale: 1.05, rotate: 1 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.03, rotate: 1 }}
+              whileTap={{ scale: 0.97 }}
             >
               <motion.div 
-                className="text-6xl mb-4"
+                className="text-4xl sm:text-6xl mb-4"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ type: 'spring', stiffness: 200, delay: 0.2 + index * 0.1 }}
+                aria-hidden="true"
               >
                 {stat.icon}
               </motion.div>
               <AnimatedNumber value={stat.value} suffix={stat.suffix} />
               <motion.p 
-                className="mt-2 text-xl text-gray-300"
+                className="mt-2 text-base sm:text-xl text-gray-300"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 + index * 0.1 }}
@@ -116,4 +126,4 @@ const StatsSection = () => {
   );
 };
 
-export default StatsSection;
+export default React.memo(StatsSection);
