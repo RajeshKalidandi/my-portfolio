@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useCallback, lazy, Suspense, useMemo } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 import { Link } from 'react-scroll';
 import { FaArrowRight } from 'react-icons/fa';
@@ -7,13 +7,14 @@ import { Helmet } from 'react-helmet';
 const LazyImage = lazy(() => import('./LazyImage'));
 
 const Home = () => {
-  const jobTypes = [
+  const jobTypes = useMemo(() => [
     "Full-time Roles", "Internships", "Remote Positions",
     "Part-time Opportunities", "Freelance Projects", 
     "Contract Work", "Hourly Consulting"
-  ];
+  ], []);
 
   const [currentJobType, setCurrentJobType] = useState(0);
+  const [particleCount, setParticleCount] = useState(20);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -33,6 +34,15 @@ const Home = () => {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [handleMouseMove]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setParticleCount(window.innerWidth < 768 ? 10 : 20);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -60,27 +70,26 @@ const Home = () => {
   const imageX = useTransform(mouseX, [0, window.innerWidth], [-15, 15]);
   const imageY = useTransform(mouseY, [0, window.innerHeight], [-15, 15]);
 
-  const [particleCount, setParticleCount] = useState(20);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setParticleCount(window.innerWidth < 768 ? 10 : 20);
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   return (
     <section name="home" className="w-full min-h-screen bg-gradient-to-b from-black via-gray-900 to-blue-900 relative overflow-hidden">
       <Helmet>
-        <title>Rajesh Kalidandi - AI & ML Specialist | Full Stack Developer</title>
-        <meta name="description" content="Rajesh Kalidandi is a Computer Science & Engineering student specializing in AI & ML, with experience in data analysis and innovative AI projects." />
-        <meta name="keywords" content="Rajesh Kalidandi, AI, ML, Full Stack Developer, Data Analysis, Computer Science" />
+        <title>Rajesh Kalidandi | AI & ML Specialist | Full Stack Developer</title>
+        <meta name="description" content="Rajesh Kalidandi: AI/ML specialist and Full Stack Developer with expertise in Python, React, and TensorFlow. Explore innovative projects in data analysis and software development." />
+        <meta name="keywords" content="Rajesh Kalidandi, AI, Machine Learning, Full Stack Developer, Python, React, TensorFlow, Data Analysis, Software Development, Computer Science" />
+        <meta name="author" content="Rajesh Kalidandi" />
+        <link rel="canonical" href="https://www.rajeshkalidandi.netlify.app" />
+        <meta property="og:title" content="Rajesh Kalidandi | AI & ML Specialist | Full Stack Developer" />
+        <meta property="og:description" content="Discover the portfolio of Rajesh Kalidandi, an AI/ML specialist and Full Stack Developer. Explore innovative projects and cutting-edge solutions." />
+        <meta property="og:image" content="https://www.rajeshkalidandi.netlify.app/og-image.jpg" />
+        <meta property="og:url" content="https://www.rajeshkalidandi.netlify.app" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Rajesh Kalidandi | AI/ML & Full Stack Dev" />
+        <meta name="twitter:description" content="AI/ML specialist and Full Stack Developer showcasing innovative projects and tech solutions." />
+        <meta name="twitter:image" content="https://www.rajeshkalidandi.netlify.app/twitter-image.jpg" />
       </Helmet>
 
       {/* Background particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         {[...Array(particleCount)].map((_, i) => (
           <motion.div
             key={i}
@@ -160,7 +169,8 @@ const Home = () => {
               to="projects"
               smooth
               duration={500}
-              className="group text-white text-sm sm:text-base md:text-lg w-full sm:w-fit px-4 sm:px-6 py-2 sm:py-3 my-2 flex items-center justify-center rounded-md bg-gradient-to-r from-cyan-500 to-blue-500 cursor-pointer hover:bg-gradient-to-l transition-all duration-300"
+              className="group text-white text-sm sm:text-base md:text-lg w-full sm:w-fit px-4 sm:px-6 py-2 sm:py-3 my-2 flex items-center justify-center rounded-md bg-gradient-to-r from-cyan-500 to-blue-500 cursor-pointer hover:bg-gradient-to-l transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-opacity-50"
+              aria-label="View Projects"
             >
               View Projects
               <motion.span 
@@ -168,7 +178,7 @@ const Home = () => {
                 animate={{ x: [0, 5, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               >
-                <FaArrowRight />
+                <FaArrowRight aria-hidden="true" />
               </motion.span>
             </Link>
           </motion.div>
@@ -195,20 +205,39 @@ const Home = () => {
       </motion.div>
 
       <script type="application/ld+json">
-        {`
-          {
-            "@context": "http://schema.org",
-            "@type": "Person",
-            "name": "Rajesh Kalidandi",
-            "jobTitle": "AI & ML Specialist, Full Stack Developer",
-            "description": "Computer Science & Engineering student specializing in AI & ML, experienced in data analysis and innovative AI projects.",
-            "url": "https://www.yourwebsite.com",
-            "sameAs": [
-              "https://www.linkedin.com/in/rajesh-kalidandi/",
-              "https://github.com/RajeshKalidandi"
-            ]
-          }
-        `}
+        {JSON.stringify({
+          "@context": "http://schema.org",
+          "@type": "Person",
+          "name": "Rajesh Kalidandi",
+          "jobTitle": "AI & ML Specialist, Full Stack Developer",
+          "description": "Computer Science & Engineering student specializing in AI & ML, experienced in data analysis and innovative AI projects.",
+          "url": "https://www.rajeshkalidandi.netlify.app",
+          "sameAs": [
+            "https://www.linkedin.com/in/rajesh-kalidandi/",
+            "https://github.com/RajeshKalidandi"
+          ],
+          "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "Malla Reddy Engineering College"
+          },
+          "knowsAbout": [
+            "Artificial Intelligence",
+            "Machine Learning",
+            "Full Stack Development",
+            "Python",
+            "React",
+            "TensorFlow",
+            "Data Analysis",
+            "Software Development"
+          ],
+          "offers": jobTypes.map(type => ({
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": type
+            }
+          }))
+        })}
       </script>
     </section>
   );
