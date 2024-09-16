@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSpring, animated, config } from 'react-spring';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaCertificate } from 'react-icons/fa';
 
 const certifications = [
   {
@@ -95,10 +95,10 @@ const Certifications = () => {
 
   const props = useSpring({
     opacity: 1,
-    transform: 'translateX(0%)',
-    from: { opacity: 0, transform: `translateX(${direction * 100}%)` },
+    transform: 'translate3d(0%, 0, 0) rotateY(0deg)',
+    from: { opacity: 0, transform: `translate3d(${direction * 100}%, 0, 0) rotateY(${direction * 90}deg)` },
     reset: true,
-    config: config.molasses,
+    config: { ...config.molasses, tension: 120, friction: 14 },
   });
 
   useEffect(() => {
@@ -122,11 +122,20 @@ const Certifications = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white py-16 px-4">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-12">Certifications</h2>
-        <div className="relative">
-          <animated.div style={props} className="bg-gray-800 rounded-lg shadow-xl p-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-black text-white py-16 px-4 overflow-hidden">
+      <div className="max-w-4xl mx-auto relative">
+        <h2 className="text-5xl font-bold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+          Certifications
+        </h2>
+        <div className="relative perspective-1000">
+          <animated.div 
+            style={{
+              ...props,
+              boxShadow: props.opacity.to(o => `0 ${10 * o}px ${20 * o}px rgba(0, 0, 0, 0.3)`),
+            }} 
+            className="bg-gray-800 rounded-lg p-8 transform-style-3d"
+          >
+            <FaCertificate className="text-6xl text-cyan-400 mb-4" />
             <h3 className="text-2xl font-semibold mb-2">{certifications[index].title}</h3>
             <p className="text-gray-300">Issued by: {certifications[index].issuer}</p>
             <p className="text-gray-400">Date: {certifications[index].date}</p>
@@ -136,23 +145,25 @@ const Certifications = () => {
           </animated.div>
           <button 
             onClick={() => navigate(-1)} 
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all"
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-all focus:outline-none focus:ring-2 focus:ring-cyan-400"
           >
             <FaChevronLeft size={24} />
           </button>
           <button 
             onClick={() => navigate(1)} 
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all"
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-all focus:outline-none focus:ring-2 focus:ring-cyan-400"
           >
             <FaChevronRight size={24} />
           </button>
         </div>
-        <div className="flex justify-center mt-6">
+        <div className="flex justify-center mt-6 space-x-2">
           {certifications.map((_, i) => (
             <button
               key={i}
               onClick={() => setIndex(i)}
-              className={`mx-1 w-3 h-3 rounded-full ${i === index ? 'bg-white' : 'bg-gray-600'}`}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                i === index ? 'bg-cyan-400 scale-125' : 'bg-gray-600 hover:bg-gray-400'
+              }`}
             />
           ))}
         </div>

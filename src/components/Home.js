@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 import { Link } from 'react-scroll';
+import { FaArrowRight } from 'react-icons/fa';
 
 const Home = () => {
   const jobTypes = [
@@ -10,6 +11,7 @@ const Home = () => {
   ];
 
   const [currentJobType, setCurrentJobType] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -17,6 +19,19 @@ const Home = () => {
     }, 3000);
     return () => clearInterval(interval);
   }, [jobTypes.length]); // Added jobTypes.length as a dependency
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [jobTypes.length]);
+
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useTransform(y, [-300, 300], [30, -30]);
+  const rotateY = useTransform(x, [-300, 300], [-30, 30]);
 
   // New animation variants
   const containerVariants = {
@@ -43,9 +58,32 @@ const Home = () => {
   };
 
   return (
-    <div name="home" className="w-full h-screen bg-gradient-to-b from-black via-black to-gray-800">
+    <div name="home" className="w-full h-screen bg-gradient-to-b from-black via-gray-900 to-blue-900 relative overflow-hidden">
+      {/* Dynamic background particles */}
+      {[...Array(20)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute bg-white rounded-full"
+          style={{
+            width: Math.random() * 5 + 1,
+            height: Math.random() * 5 + 1,
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            y: [0, -1000],
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: Math.random() * 10 + 20,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      ))}
+      
       <motion.div 
-        className="max-w-screen-lg mx-auto flex flex-col items-center justify-center h-full px-4 md:flex-row"
+        className="max-w-screen-lg mx-auto flex flex-col items-center justify-center h-full px-4 md:flex-row relative z-10"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -69,10 +107,13 @@ const Home = () => {
             </motion.span>
           </motion.h2>
 
-          <p className="text-gray-500 py-4 max-w-md">
+          <motion.p 
+            className="text-gray-300 py-4 max-w-md"
+            variants={itemVariants}
+          >
             Computer Science & Engineering student specializing in AI & ML.
             Experienced in data analysis, software development, and innovative AI projects.
-          </p>
+          </motion.p>
 
           {/* Updated job types animation */}
           <motion.h2 
@@ -94,7 +135,7 @@ const Home = () => {
             </AnimatePresence>
           </motion.h2>
 
-          <div className="mt-8">
+          <motion.div className="mt-8" variants={itemVariants}>
             <Link
               to="projects"
               smooth
@@ -107,23 +148,33 @@ const Home = () => {
                 animate={{ x: [0, 5, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               >
-                →
+                <FaArrowRight />
               </motion.span>
             </Link>
-          </div>
+          </motion.div>
         </motion.div>
 
         {/* Updated image animation */}
         <motion.div
           className="md:w-1/2 flex justify-center items-center mt-8 md:mt-0"
           variants={itemVariants}
+          style={{
+            perspective: 1000,
+          }}
         >
           <motion.img 
             src="/hero-section.png" 
             alt="Rajesh Kalidandi" 
-            className="rounded-full w-2/3 md:w-full max-w-lg shadow-lg shadow-cyan-500/50"
+            className="rounded-2xl w-2/3 md:w-full max-w-lg shadow-lg shadow-cyan-500/50"
+            style={{
+              rotateX,
+              rotateY,
+            }}
+            drag
+            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+            dragElastic={0.1}
             whileHover={{ scale: 1.05 }}
-            transition={{ type: 'spring', stiffness: 300 }}
+            whileTap={{ scale: 0.95 }}
           />
         </motion.div>
       </motion.div>
