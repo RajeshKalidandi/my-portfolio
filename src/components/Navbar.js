@@ -47,6 +47,10 @@ const Navbar = () => {
     {
       id: 7,
       link: 'contact'
+    },
+    {
+      id: 4,
+      link: 'services' // Add this line
     }
   ];
 
