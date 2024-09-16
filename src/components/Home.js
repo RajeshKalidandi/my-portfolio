@@ -11,29 +11,25 @@ const Home = () => {
   ];
 
   const [currentJobType, setCurrentJobType] = useState(0);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentJobType((prev) => (prev + 1) % jobTypes.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, [jobTypes.length]); // Added jobTypes.length as a dependency
+  }, [jobTypes.length]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
     };
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [jobTypes.length]);
+  }, [mouseX, mouseY]);
 
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useTransform(y, [-300, 300], [30, -30]);
-  const rotateY = useTransform(x, [-300, 300], [-30, 30]);
-
-  // New animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -56,6 +52,9 @@ const Home = () => {
       },
     },
   };
+
+  const imageX = useTransform(mouseX, [0, window.innerWidth], [-15, 15]);
+  const imageY = useTransform(mouseY, [0, window.innerHeight], [-15, 15]);
 
   return (
     <div name="home" className="w-full h-screen bg-gradient-to-b from-black via-gray-900 to-blue-900 relative overflow-hidden">
@@ -92,7 +91,6 @@ const Home = () => {
           className="flex flex-col justify-center h-full md:w-1/2"
           variants={itemVariants}
         >
-          {/* Updated name animation */}
           <motion.h2 
             className="text-4xl sm:text-7xl font-bold text-white"
             variants={itemVariants}
@@ -115,7 +113,6 @@ const Home = () => {
             Experienced in data analysis, software development, and innovative AI projects.
           </motion.p>
 
-          {/* Updated job types animation */}
           <motion.h2 
             className="text-3xl font-bold text-gray-300 mt-4"
             variants={itemVariants}
@@ -154,7 +151,6 @@ const Home = () => {
           </motion.div>
         </motion.div>
 
-        {/* Updated image animation */}
         <motion.div
           className="md:w-1/2 flex justify-center items-center mt-8 md:mt-0"
           variants={itemVariants}
@@ -167,12 +163,9 @@ const Home = () => {
             alt="Rajesh Kalidandi" 
             className="rounded-2xl w-2/3 md:w-full max-w-lg shadow-lg shadow-cyan-500/50"
             style={{
-              rotateX,
-              rotateY,
+              x: imageX,
+              y: imageY,
             }}
-            drag
-            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-            dragElastic={0.1}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           />

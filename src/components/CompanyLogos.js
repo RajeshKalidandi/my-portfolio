@@ -33,32 +33,33 @@ const CompanyLogos = () => {
   };
 
   return (
-    <motion.div 
-      className="relative bg-gradient-to-br from-gray-900 to-black py-20 overflow-hidden"
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-    >
-      <motion.div
-        className="absolute inset-0 opacity-10"
-        animate={{
-          scale: [1, 1.2, 1],
-          rotate: [0, 10, -10, 0],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          repeatType: 'reverse',
-        }}
-      >
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#FF0066" d="M47.5,-61.3C59.8,-52.2,67.1,-36.8,71.3,-21.8C75.5,-6.8,76.5,11.9,70.8,26.4C65.1,40.9,52.7,53.2,38.8,60.2C24.9,67.2,9.5,68.9,-6.7,67.6C-22.9,66.3,-45.8,62,-59.6,49.5C-73.4,37,-78.2,16.3,-75.4,-2.8C-72.7,-21.9,-62.4,-39.4,-48.9,-48.7C-35.4,-58,-17.7,-59.1,-0.2,-58.8C17.3,-58.6,34.2,-70.4,47.5,-61.3Z" transform="translate(100 100)" />
-        </svg>
-      </motion.div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section className="w-full min-h-screen bg-gradient-to-b from-gray-800 to-black text-gray-300 py-16 relative overflow-hidden">
+      {/* Dynamic background particles */}
+      {[...Array(50)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute bg-white rounded-full"
+          style={{
+            width: Math.random() * 3 + 1,
+            height: Math.random() * 3 + 1,
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            y: [0, -1000],
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: Math.random() * 10 + 20,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      ))}
+      
+      <div className="max-w-screen-lg mx-auto px-4 relative z-10">
         <motion.h2 
-          className="text-center text-4xl font-extrabold text-white mb-12"
+          className="text-4xl font-bold text-center mb-12 text-white"
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
@@ -66,27 +67,38 @@ const CompanyLogos = () => {
           Companies I've Worked With
         </motion.h2>
         <motion.div 
-          className="grid grid-cols-2 gap-12 md:grid-cols-3 lg:grid-cols-5"
+          className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5"
           variants={containerVariants}
+          initial="hidden"
+          animate="visible"
         >
           {companies.map((company, index) => (
             <motion.div
               key={index}
-              className="col-span-1 flex justify-center items-center"
+              className="flex flex-col justify-center items-center group"
               variants={itemVariants}
               whileHover={{ scale: 1.1, rotate: 5 }}
               whileTap={{ scale: 0.95 }}
             >
-              <img
-                className="h-16 md:h-20 filter brightness-0 invert opacity-70 hover:opacity-100 transition-all duration-300"
-                src={company.logo}
-                alt={company.name}
-              />
+              <div className="relative">
+                <img
+                  className="h-16 md:h-20 filter brightness-0 invert opacity-70 group-hover:opacity-100 transition-all duration-300"
+                  src={company.logo}
+                  alt={company.name}
+                />
+                <motion.div
+                  className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75 text-white text-center p-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                >
+                  {company.name}
+                </motion.div>
+              </div>
             </motion.div>
           ))}
         </motion.div>
       </div>
-    </motion.div>
+    </section>
   );
 };
 

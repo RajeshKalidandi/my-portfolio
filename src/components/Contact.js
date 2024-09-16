@@ -1,8 +1,19 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useCallback } from 'react';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 
 const Contact = () => {
+  const [hoveredButton, setHoveredButton] = useState(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleMouseMove = useCallback((event) => {
+    const { currentTarget, clientX, clientY } = event;
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }, [mouseX, mouseY]);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -58,9 +69,51 @@ const Contact = () => {
     }
   };
 
+  const buttonGradient = useTransform(
+    [mouseX, mouseY],
+    ([x, y]) => `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 80%)`
+  );
+
+  const Particles = () => (
+    <div className="absolute inset-0 overflow-hidden">
+      {[...Array(50)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute bg-white rounded-full"
+          style={{
+            width: Math.random() * 3 + 1,
+            height: Math.random() * 3 + 1,
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            y: [0, -1000],
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: Math.random() * 10 + 20,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      ))}
+    </div>
+  );
+
+  const buttons = [
+    { href: "https://www.linkedin.com/in/rajesh-kalidandi", icon: FaLinkedin, text: "Connect on LinkedIn", bgColor: "bg-blue-600", hoverColor: "bg-blue-700" },
+    { href: "https://github.com/RajeshKalidandi", icon: FaGithub, text: "Check GitHub", bgColor: "bg-gray-800", hoverColor: "bg-gray-700" },
+    { href: "mailto:kalidandiirajesh@gmail.com", icon: FaEnvelope, text: "Send me an Email", bgColor: "bg-red-600", hoverColor: "bg-red-700" }
+  ];
+
   return (
-    <div name="contact" className="w-full min-h-screen bg-gradient-to-b from-black to-gray-800 p-4 text-white perspective-1000">
-      <div className="flex flex-col justify-center max-w-screen-lg mx-auto h-full">
+    <section 
+      name="contact" 
+      className="w-full min-h-screen bg-gradient-to-b from-black to-gray-800 text-gray-300 py-16 relative overflow-hidden perspective-1000"
+      onMouseMove={handleMouseMove}
+    >
+      <Particles />
+      <div className="flex flex-col justify-center max-w-screen-lg mx-auto h-full relative z-10">
         <motion.div 
           className="pb-8"
           variants={containerVariants}
@@ -87,48 +140,35 @@ const Contact = () => {
           initial="hidden"
           animate="visible"
         >
-          <motion.a
-            href="https://www.linkedin.com/in/rajesh-kalidandi"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center bg-blue-600 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-300 w-64"
-            variants={buttonVariants}
-            initial="rest"
-            whileHover="hover"
-            whileTap="tap"
-            animate={floatAnimation}
-          >
-            <FaLinkedin className="mr-2" /> Connect on LinkedIn
-          </motion.a>
-
-          <motion.a
-            href="https://github.com/RajeshKalidandi"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center bg-gray-800 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-700 transition-all duration-300 w-64"
-            variants={buttonVariants}
-            initial="rest"
-            whileHover="hover"
-            whileTap="tap"
-            animate={floatAnimation}
-          >
-            <FaGithub className="mr-2" /> Check GitHub
-          </motion.a>
-
-          <motion.a
-            href="mailto:kalidandiirajesh@gmail.com"
-            className="flex items-center justify-center bg-red-600 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-red-700 transition-all duration-300 w-64"
-            variants={buttonVariants}
-            initial="rest"
-            whileHover="hover"
-            whileTap="tap"
-            animate={floatAnimation}
-          >
-            <FaEnvelope className="mr-2" /> Send me an Email
-          </motion.a>
+          {buttons.map((button, index) => (
+            <motion.a
+              key={index}
+              href={button.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`flex items-center justify-center ${button.bgColor} text-white px-6 py-3 rounded-full text-lg font-semibold hover:${button.hoverColor} transition-all duration-300 w-64 relative overflow-hidden`}
+              variants={buttonVariants}
+              initial="rest"
+              whileHover="hover"
+              whileTap="tap"
+              animate={floatAnimation}
+              onHoverStart={() => setHoveredButton(index)}
+              onHoverEnd={() => setHoveredButton(null)}
+            >
+              <button.icon className="mr-2" /> {button.text}
+              {hoveredButton === index && (
+                <motion.div
+                  className="absolute inset-0 opacity-10"
+                  style={{
+                    background: buttonGradient
+                  }}
+                />
+              )}
+            </motion.a>
+          ))}
         </motion.div>
       </div>
-    </div>
+    </section>
   );
 };
 

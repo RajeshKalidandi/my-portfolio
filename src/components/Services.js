@@ -5,7 +5,7 @@ import { MdEmail } from 'react-icons/md';
 
 const ServiceCard = ({ icon: Icon, title, description, features }) => (
   <motion.div 
-    className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg p-8 shadow-lg"
+    className="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-lg p-8 shadow-lg"
     whileHover={{ scale: 1.05 }}
     transition={{ type: 'spring', stiffness: 300 }}
   >
@@ -108,8 +108,31 @@ const Services = () => {
   ];
 
   return (
-    <div name="services" className="min-h-screen flex items-center justify-center bg-gradient-to-b from-black to-gray-800">
-      <div className="max-w-4xl mx-auto px-4 py-12">
+    <section name="services" className="w-full min-h-screen bg-gradient-to-b from-black to-gray-800 text-gray-300 py-16 relative overflow-hidden">
+      {/* Dynamic background particles */}
+      {[...Array(50)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute bg-white rounded-full"
+          style={{
+            width: Math.random() * 3 + 1,
+            height: Math.random() * 3 + 1,
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            y: [0, -1000],
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: Math.random() * 10 + 20,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      ))}
+      
+      <div className="max-w-screen-lg mx-auto px-4 py-12 relative z-10">
         <motion.h2 
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -140,7 +163,7 @@ const Services = () => {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

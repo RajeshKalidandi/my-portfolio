@@ -93,8 +93,31 @@ const Skills = () => {
   };
 
   return (
-    <div name="skills" className="w-full min-h-screen bg-gradient-to-b from-gray-800 to-black text-white py-16">
-      <div className="max-w-screen-lg p-4 mx-auto flex flex-col justify-center w-full h-full">
+    <section name="skills" className="w-full min-h-screen bg-gradient-to-b from-gray-800 to-black text-gray-300 py-16 relative overflow-hidden">
+      {/* Dynamic background particles */}
+      {[...Array(50)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute bg-white rounded-full"
+          style={{
+            width: Math.random() * 3 + 1,
+            height: Math.random() * 3 + 1,
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            y: [0, -1000],
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: Math.random() * 10 + 20,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      ))}
+      
+      <div className="max-w-screen-lg p-4 mx-auto flex flex-col justify-center w-full h-full relative z-10">
         <motion.div 
           className="pb-8"
           initial={{ opacity: 0, y: -20 }}
@@ -102,7 +125,7 @@ const Skills = () => {
           transition={{ duration: 0.5 }}
         >
           <p className="text-4xl font-bold inline border-b-4 border-gray-500">Skills</p>
-          <p className="py-6">These are the technologies I've worked with</p>
+          <p className="py-6 text-gray-300">These are the technologies I've worked with</p>
         </motion.div>
 
         <motion.div 
@@ -190,7 +213,7 @@ const Skills = () => {
           )}
         </AnimatePresence>
       </div>
-    </div>
+    </section>
   );
 };
 

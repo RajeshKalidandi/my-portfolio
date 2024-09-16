@@ -7,51 +7,41 @@ import { motion, AnimatePresence } from 'framer-motion';
 const Navbar = () => {
   const [nav, setNav] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+  const [scrollProgress, setScrollProgress] = useState(0);
 
-  // New effect to handle navbar background change on scroll
   useEffect(() => {
     const handleScroll = () => {
       const isScrolled = window.scrollY > 10;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const currentProgress = (window.scrollY / totalScroll) * 100;
+
+      setScrolled(isScrolled);
+      setScrollProgress(currentProgress);
+
+      // Determine active section
+      const sections = ['home', 'about', 'projects', 'skills', 'experience', 'contact', 'services'];
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sections[i]);
+        if (section && window.scrollY >= section.offsetTop - 100) {
+          setActiveSection(sections[i]);
+          break;
+        }
       }
     };
 
     document.addEventListener('scroll', handleScroll);
-    return () => {
-      document.removeEventListener('scroll', handleScroll);
-    };
-  }, [scrolled]);
+    return () => document.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const links = [
-    {
-      id: 1,
-      link: 'home'
-    },
-    {
-      id: 2,
-      link: 'about'
-    },
-    {
-      id: 3,
-      link: 'projects'
-    },
-    {
-      id: 4,
-      link: 'skills'
-    },
-    {
-      id: 5,
-      link: 'experience'
-    },
-    {
-      id: 7,
-      link: 'contact'
-    },
-    {
-      id: 4,
-      link: 'services' // Add this line
-    }
+    { id: 1, link: 'home' },
+    { id: 2, link: 'about' },
+    { id: 3, link: 'projects' },
+    { id: 4, link: 'skills' },
+    { id: 5, link: 'experience' },
+    { id: 6, link: 'contact' },
+    { id: 7, link: 'services' }
   ];
 
   return (
@@ -63,11 +53,18 @@ const Navbar = () => {
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
     >
+      <motion.div
+        className="absolute top-0 left-0 h-1 bg-cyan-500"
+        style={{ width: `${scrollProgress}%` }}
+      />
+
       <div>
         <motion.h1 
           className="text-5xl font-signature ml-2"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
+          animate={{ rotate: [0, 5, 0] }}
+          transition={{ duration: 0.5, repeat: Infinity }}
         >
           <bold>RK</bold>
         </motion.h1>
@@ -77,11 +74,13 @@ const Navbar = () => {
         {links.map(({ id, link }) => (
           <motion.li
             key={id}
-            className="px-4 cursor-pointer capitalize font-medium text-gray-500 hover:text-white"
+            className={`px-4 cursor-pointer ${
+              activeSection === link ? 'text-cyan-500' : 'text-gray-500 hover:text-white'
+            }`}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Link to={link} smooth duration={500}>
+            <Link to={link} smooth duration={500} spy={true} activeClass="active">
               {link}
             </Link>
           </motion.li>
@@ -120,7 +119,9 @@ const Navbar = () => {
             {links.map(({ id, link }) => (
               <motion.li
                 key={id}
-                className="px-4 cursor-pointer capitalize py-6 text-4xl"
+                className={`px-4 cursor-pointer capitalize py-6 text-4xl ${
+                  activeSection === link ? 'text-cyan-500' : ''
+                }`}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -129,6 +130,8 @@ const Navbar = () => {
                   to={link}
                   smooth
                   duration={500}
+                  spy={true}
+                  activeClass="active"
                 >
                   {link}
                 </Link>

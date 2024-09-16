@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSpring, animated, config } from 'react-spring';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FaChevronLeft, FaChevronRight, FaCertificate } from 'react-icons/fa';
 
 const certifications = [
@@ -91,19 +91,9 @@ const certifications = [
 
 const Certifications = () => {
   const [index, setIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
-
-  const props = useSpring({
-    opacity: 1,
-    transform: 'translate3d(0%, 0, 0) rotateY(0deg)',
-    from: { opacity: 0, transform: `translate3d(${direction * 100}%, 0, 0) rotateY(${direction * 90}deg)` },
-    reset: true,
-    config: { ...config.molasses, tension: 120, friction: 14 },
-  });
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setDirection(1);
       setIndex((current) => (current + 1) % certifications.length);
     }, 5000);
 
@@ -111,7 +101,6 @@ const Certifications = () => {
   }, []);
 
   const navigate = (dir) => {
-    setDirection(dir);
     setIndex((current) => {
       if (dir === 1) {
         return (current + 1) % certifications.length;
@@ -122,36 +111,60 @@ const Certifications = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-black text-white py-16 px-4 overflow-hidden">
-      <div className="max-w-4xl mx-auto relative">
-        <h2 className="text-5xl font-bold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
-          Certifications
-        </h2>
-        <div className="relative perspective-1000">
-          <animated.div 
-            style={{
-              ...props,
-              boxShadow: props.opacity.to(o => `0 ${10 * o}px ${20 * o}px rgba(0, 0, 0, 0.3)`),
-            }} 
-            className="bg-gray-800 rounded-lg p-8 transform-style-3d"
-          >
-            <FaCertificate className="text-6xl text-cyan-400 mb-4" />
-            <h3 className="text-2xl font-semibold mb-2">{certifications[index].title}</h3>
-            <p className="text-gray-300">Issued by: {certifications[index].issuer}</p>
-            <p className="text-gray-400">Date: {certifications[index].date}</p>
-            {certifications[index].details && (
-              <p className="text-gray-400 mt-2">{certifications[index].details}</p>
-            )}
-          </animated.div>
+    <section name="certifications" className="w-full min-h-screen bg-gradient-to-b from-black to-gray-800 text-gray-300 py-16 relative overflow-hidden">
+      {/* Dynamic background particles */}
+      {[...Array(50)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute bg-white rounded-full"
+          style={{
+            width: Math.random() * 3 + 1,
+            height: Math.random() * 3 + 1,
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            y: [0, -1000],
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: Math.random() * 10 + 20,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      ))}
+      
+      <div className="max-w-4xl mx-auto px-4 relative z-10">
+        <h2 className="text-4xl font-bold text-center mb-12 text-white">Certifications</h2>
+        <div className="relative">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -50 }}
+              transition={{ duration: 0.5 }}
+              className="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-lg p-8 shadow-xl"
+            >
+              <FaCertificate className="text-4xl text-blue-400 mb-4" />
+              <h3 className="text-2xl font-semibold mb-2 text-white">{certifications[index].title}</h3>
+              <p className="text-gray-300">Issued by: {certifications[index].issuer}</p>
+              <p className="text-gray-400">Date: {certifications[index].date}</p>
+              {certifications[index].details && (
+                <p className="text-gray-400 mt-2">{certifications[index].details}</p>
+              )}
+            </motion.div>
+          </AnimatePresence>
           <button 
             onClick={() => navigate(-1)} 
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-all focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-700 text-gray-300 p-2 rounded-full hover:bg-gray-600 transition-all"
           >
             <FaChevronLeft size={24} />
           </button>
           <button 
             onClick={() => navigate(1)} 
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-all focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-700 text-gray-300 p-2 rounded-full hover:bg-gray-600 transition-all"
           >
             <FaChevronRight size={24} />
           </button>
@@ -162,13 +175,13 @@ const Certifications = () => {
               key={i}
               onClick={() => setIndex(i)}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                i === index ? 'bg-cyan-400 scale-125' : 'bg-gray-600 hover:bg-gray-400'
+                i === index ? 'bg-blue-500' : 'bg-gray-600 hover:bg-gray-500'
               }`}
             />
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
