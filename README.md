@@ -58,11 +58,6 @@ npm start
 
 5. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-## 📁 Project Structure
-my-portfolio/ │ ├── public/ │ ├── index.html │ ├── favicon.ico │ ├── manifest.json │ ├── robots.txt │ ├── sitemap.xml │ ├── RajeshKalidandi_2024_Updated.pdf │ └── [Various company logos and images] │ ├── src/ │ ├── components/ │ │ ├── About.js │ │ ├── AnimatedText.js │ │ ├── Certifications.js │ │ ├── CompanyLogos.js │ │ ├── Contact.js │ │ ├── Experience.js │ │ ├── Footer.js │ │ ├── Home.js │ │ ├── LoadingSpinner.js │ │ ├── Navbar.js │ │ ├── PageWrapper.js │ │ ├── Projects.js │ │ ├── Services.js │ │ ├── Skills.js │ │ ├── SmoothComponent.js │ │ ├── SmoothList.js │ │ └── StatsSection.js │ │ │ ├── App.js │ ├── index.js │ └── index.css │ ├── package.json ├── package-lock.json ├── postcss.config.js ├── tailwind.config.js └── README.md
-
-
-
 
 ## 🌟 Key Components
 
