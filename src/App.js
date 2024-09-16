@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import About from './components/About';
@@ -11,23 +12,31 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import CompanyLogos from './components/CompanyLogos';
 import StatsSection from './components/StatsSection';
+import PageWrapper from './components/PageWrapper';
 
 function App() {
   return (
-    <div>
+    <Router>
       <Navbar />
-      <Home />
-      <About />
-      <Projects />
-      <Experience />
-      <Skills />
-      <Services />
-      <StatsSection />
-      <CompanyLogos />
-      <Certifications />
-      <Contact />
+      <Routes>
+        <Route path="/" element={
+          <PageWrapper>
+            <Home />
+            <About />
+            <Projects />
+            <Experience />
+            <Skills />
+            <Services />
+            <StatsSection />
+            <CompanyLogos />
+            <Certifications />
+            <Contact />
+          </PageWrapper>
+        } />
+        {/* Add more routes as needed */}
+      </Routes>
       <Footer />
-    </div>
+    </Router>
   );
 }
 
