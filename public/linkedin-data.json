@@ -1,7 +1,7 @@
 {
   "experiences": [
     {
-      "title": "Software Engineering Intern",
+      "title": "Data Analyst Virtual Intern",
       "company": "Accenture North America",
       "date": "Jun 2023 - Aug 2023",
       "description": [
@@ -11,9 +11,9 @@
       ]
     },
     {
-      "title": "Data Science Intern",
+      "title": "Software Engineering Virtual Intern",
       "company": "Walmart USA",
-      "date": "May 2022 - Jul 2022",
+      "date": "May 2023 - Jul 2023",
       "description": [
         "Analyzed large datasets to identify trends and patterns in customer behavior.",
         "Developed predictive models to forecast product demand and optimize inventory management.",
@@ -21,9 +21,9 @@
       ]
     },
     {
-      "title": "Software Engineering Intern",
+      "title": "AI Virtual Intern",
       "company": "Cognizant",
-      "date": "Jun 2021 - Aug 2021",
+      "date": "Jun 2023 - Aug 2023",
       "description": [
         "Assisted in the development of web applications using React and Node.js.",
         "Participated in code reviews and contributed to improving code quality and efficiency.",
@@ -33,13 +33,81 @@
   ],
   "education": [
     {
-      "title": "B.Tech in Computer Science & Engineering",
+      "degree": "B.Tech in Computer Science & Engineering",
       "institution": "Malla Reddy Engineering College",
-      "date": "2020 - 2024",
+      "date": "2021 - 2025",
       "description": [
-        "Specialization in Artificial Intelligence and Machine Learning",
-        "Relevant coursework: Data Structures, Algorithms, Machine Learning, Deep Learning, Computer Vision"
+        "Specialization in Artificial Intelligence and Machine Learning.",
+        "Relevant coursework: Data Structures, Algorithms, Machine Learning, Deep Learning, Computer Vision."
       ]
+    },
+    {
+      "degree": "Intermediate Education",
+      "institution": "Narayana Junior College",
+      "year": "2019 – 2021"
+    },
+    {
+      "degree": "Secondary Education",
+      "institution": "Krishnaveni Talent School",
+      "year": "2019"
+    }
+  ],
+  "experience": [
+    {
+      "role": "Python Developer Intern",
+      "company": "InnoByte Services",
+      "location": "New Delhi, India",
+      "date": "Aug 2024 - Present",
+      "description": "Contributed to Python-based projects focusing on coding, debugging, and software implementation. Gained hands-on experience in Python development and collaboration."
+    },
+    {
+      "role": "Marketing and Business Development Intern",
+      "company": "Shine Projects",
+      "location": "Hyderabad, Telangana, India",
+      "date": "May 2024 - Jun 2024",
+      "description": "Supported marketing efforts, including cold calling, B2B/B2C sales, and client interactions. Gained insights into stock markets, mutual funds, and financial concepts."
+    },
+    {
+      "role": "Student Ambassador",
+      "company": "LetsUpgrade",
+      "location": "India",
+      "date": "Mar 2024 - May 2024",
+      "description": "Engaged with students to promote LetsUpgrade, providing guidance and representing the platform. Gained experience in leadership and community engagement."
+    },
+    {
+      "role": "Student Partner",
+      "company": "Internshala",
+      "location": "India",
+      "date": "Mar 2024 - May 2024",
+      "description": "Led initiatives to engage students with Internshala's programs, focusing on student leadership and outreach."
+    },
+    {
+      "role": "Social Media Marketing Specialist",
+      "company": "VirtuAlly Solutions",
+      "location": "India",
+      "date": "Sep 2023 - May 2024",
+      "description": "Handled social media marketing, SEO, and online advertising for clients, enhancing their e-commerce presence."
+    },
+    {
+      "role": "Founder",
+      "company": "VirtuAlly Solutions",
+      "location": "Remote",
+      "date": "Jan 2022 - May 2024",
+      "description": "Founded a digital marketing startup, leading business development and marketing strategies for B2B clients."
+    },
+    {
+      "role": "Intern",
+      "company": "GAOTek Inc.",
+      "location": "United States",
+      "date": "Mar 2024 - Apr 2024",
+      "description": "Worked on digital marketing projects with a focus on SEO, both on-page and off-page, along with keyword research and optimization."
+    },
+    {
+      "role": "Campus Ambassador",
+      "company": "eDC IIT Delhi",
+      "location": "New Delhi, India",
+      "date": "Dec 2023 - Feb 2024",
+      "description": "Promoted entrepreneurship programs, encouraging participation and providing leadership in organizing campus events."
     }
   ]
 }
